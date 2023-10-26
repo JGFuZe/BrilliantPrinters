@@ -1,0 +1,7 @@
+
+/testEnv
+*.sqlite3
+
+*.pyc
+*.pyc
+
