@@ -10,6 +10,7 @@
         {% for question in question_list %}
             <li>
                 <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+                <a class="btn btn-primary" href="{{ question.get_absolute_url }}" role="button">View</a>
             </li>
         {% endfor %}
     </ul>

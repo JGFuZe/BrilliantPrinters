@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import generic
 
+from .forms import QuestionForm
 from .models import Question
 
 # Create your views here.
@@ -21,3 +22,40 @@ class QuestionDetailView(generic.DetailView):
 # Homepage
 def index(request):
     return render(request, 'BrilliantPrinters_app/index.html')
+
+
+
+def createQuestion(request):
+
+    form = QuestionForm()
+
+    if request.method == 'POST':
+        question_data = request.POST.copy()
+
+        form = QuestionForm(question_data)
+        if form.is_valid():
+            # Save the form
+            question = form.save()
+
+            # Set the projects parent portfolio
+            question.save()
+
+            # Redirect back to portfolio details page
+            return redirect('question_list')
+        
+    context = {'form':form}
+    return render(request, 'BrilliantPrinters_app/question_form', context)
+
+#
+#
+def deleteQuestion(request, question_id):
+
+    # Store project object in project variable
+    question = Question.objects.get(id=question_id)
+
+    if request.method == 'POST':
+        question.delete()
+        return redirect('question_list')
+    
+    context = {'question':question}
+    return render(request, 'BrilliantPrinters_app/delete_question_form.html', context)
