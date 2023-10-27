@@ -1,0 +1,20 @@
+<!-- inherit from base_template.html -->
+{% extends 'BrilliantPrinters_app/base_template.html' %}
+
+<!-- Replace block content in base_template.html -->
+{% block content %}
+
+<h2>List of Questions</h2>
+{% if question_list %}
+    <ul> 
+        {% for question in question_list %}
+            <li>
+                <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no questions</p>
+{% endif %}
+
+{% endblock %}

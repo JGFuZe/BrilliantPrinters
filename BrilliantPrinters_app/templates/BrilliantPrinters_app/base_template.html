@@ -1,29 +1,38 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="{% if theme_mode %}light{% else %}dark{% endif %}">
+<html lang="en">
 <head>
-<title>UCCS CS Students</title>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-{% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <title>Brilliant Printers</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-
 <body>
-<!-- Navbar -->
+
+    <!-- Navbar -->
+    <div>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Brilliant Printers</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="{% url 'question_list' %}">Questions</a></li>
+                    <li><a href="#">Account</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 
 
+    <!-- add block content from html templates -->
+    {% block content %}
 
 
-<!-- add block content from html templates -->
-{% block content %}
-
-
-{% endblock %}
+    {% endblock %}
 
 </body>
-
 </html>
