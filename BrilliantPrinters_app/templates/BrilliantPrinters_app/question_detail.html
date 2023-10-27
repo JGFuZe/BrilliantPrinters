@@ -4,10 +4,10 @@
 <!-- Replace block content in base_template.html -->
 {% block content %}
 
-<h2>Question Title: {{ Question.Title }}</h2>
+<h2>Question Title: {{ question.title }}</h2>
 
-<p><strong>Description</strong> {{  }} </p>
-<p>Answered: </p>
+<p><strong>Description</strong> {{ question.description }} </p>
+<p><strong>Answered:</strong> {{ question.answered }} </p>
 
 
 {% endblock %}

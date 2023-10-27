@@ -15,14 +15,6 @@ class QuestionListView(generic.ListView):
 class QuestionDetailView(generic.DetailView):
     model = Question
 
-    # override get_context_data to add a project_info object to portfolio_detail.html
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["question_info"] = Question.objects.filter(
-            portfolio_id=self.get_object())
-        return context
-
-
 
 # Functions Views
 
