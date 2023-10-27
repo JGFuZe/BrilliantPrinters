@@ -5,11 +5,13 @@
 {% block content %}
 
 <h2>List of Questions</h2>
+<a class="btn btn-primary" href="{% url 'create_question' %}" role="button">New Question</a>
 {% if question_list %}
     <ul> 
         {% for question in question_list %}
             <li>
                 <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+                <a class="btn btn-primary" href="{{ question.get_absolute_url }}" role="button">View</a>
             </li>
         {% endfor %}
     </ul>
