@@ -7,7 +7,7 @@ from django.urls import reverse
 
 class Question(models.Model):
     title = models.CharField(max_length=200, blank=False)
-    description = models.CharField(max_length=200, blank=False)
+    description = models.TextField(max_length=200, blank=False)
     answered = models.BooleanField(default=False)
 
 

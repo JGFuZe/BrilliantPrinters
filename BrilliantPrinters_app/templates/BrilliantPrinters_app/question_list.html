@@ -5,6 +5,7 @@
 {% block content %}
 
 <h2>List of Questions</h2>
+<a class="btn btn-primary" href="{% url 'create_question' %}" role="button">New Question</a>
 {% if question_list %}
     <ul> 
         {% for question in question_list %}
