@@ -9,6 +9,7 @@ from django.contrib import messages
 from .decorators import allowed_users
 from .forms import QuestionForm, UserCreationForm
 from .models import Question
+from .models import Respondent
 
 # Create your views here.
 
@@ -28,6 +29,9 @@ class QuestionDetailView(LoginRequiredMixin, generic.DetailView):
 def index(request):
     return render(request, 'BrilliantPrinters_app/index.html')
 
+#
+# Account Views
+#
 
 
 def registerUser(request):
@@ -38,21 +42,21 @@ def registerUser(request):
         registerForm = UserCreationForm(request.POST)
 
         if (registerForm.is_valid()):
-
             user = registerForm.save()                              # Save form to user variable
             username = registerForm.cleaned_data.get('username')    # Get Username
             group = Group.objects.get(name='RegularUser')           # Get group
-            newUser.groups.add(group)                               # Add user to group
-            newUser = User.objects.create(user)                     # Create new user
-            newUser.save()                                          # Save new user
+            newRespondent = Respondent.objects.create(user=user)    # Create Respondent
+            newRespondent.groups.add(group)                         # Add Respondent to group
+            newRespondent.save()                                    # Save new respondent
             messages.success(request, 'Registration complete for ' + username) # Send success message
              
             # Redirtect to login page
             return redirect('login')
     
+    context = {'form':registerForm}
+    return render(request, 'registration/register_user.html', context)
 
-        context = {'form':registerForm}
-        return render(request, 'registration/register.html', context)
+
 
 # Account Views
 @login_required(login_url='login')
