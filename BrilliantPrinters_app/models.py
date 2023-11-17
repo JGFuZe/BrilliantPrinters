@@ -23,11 +23,11 @@ class Question(models.Model):
     
 
 class Respondent(models.Model):
+    
+
+
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 
-    #Define default String to return the name for representing the Model object."
-    def __str__(self):
-        return self.title
     
     #Returns the URL to access a particular instance of MyModelName.
     #if you define this method then Django will automatically

@@ -11,7 +11,7 @@ class QuestionForm(ModelForm):
         fields =['title', 'description']
 
 
-class profileForm(ModelForm):
+class ProfileForm(ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']

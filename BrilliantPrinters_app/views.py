@@ -3,17 +3,13 @@ from django.http import HttpResponse
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import  Group
 from django.contrib import messages
 
 from .decorators import allowed_users
-from .forms import QuestionForm, UserCreationForm
-from .models import Question
-from .models import Respondent
+from .forms import QuestionForm, CreateUserForm, ProfileForm
+from .models import Question, Respondent
 
-# Create your views here.
-
-# Class Views
 
 # Question list and detail views
 class QuestionListView(LoginRequiredMixin, generic.ListView):
@@ -23,30 +19,28 @@ class QuestionDetailView(LoginRequiredMixin, generic.DetailView):
     model = Question
 
 
-# Functions Views
 
 # Homepage
 def index(request):
     return render(request, 'BrilliantPrinters_app/index.html')
 
-#
-# Account Views
-#
-
+#---------------------------------------------
+#               Account Views
+#---------------------------------------------
 
 def registerUser(request):
 
-    registerForm = UserCreationForm()
+    registerForm = CreateUserForm()
 
     if (request.method == 'POST'):
-        registerForm = UserCreationForm(request.POST)
+        registerForm = CreateUserForm(request.POST)
 
         if (registerForm.is_valid()):
             user = registerForm.save()                              # Save form to user variable
             username = registerForm.cleaned_data.get('username')    # Get Username
-            group = Group.objects.get(name='RegularUser')           # Get group
+            group = Group.objects.get(name='regular_user')           # Get group
+            user.groups.add(group)                                  # Add User to group
             newRespondent = Respondent.objects.create(user=user)    # Create Respondent
-            newRespondent.groups.add(group)                         # Add Respondent to group
             newRespondent.save()                                    # Save new respondent
             messages.success(request, 'Registration complete for ' + username) # Send success message
              
@@ -57,29 +51,31 @@ def registerUser(request):
     return render(request, 'registration/register_user.html', context)
 
 
-
-# Account Views
 @login_required(login_url='login')
 def logoutUser(request):
     return redirect('index')
 
 
+def profile(request):
+    user = request.user    #
+    form = ProfileForm(instance=user) #
+
+    if (request.method == 'POST'):
+        form = ProfileForm(request.POST, request.FILES, instance=user)
+
+        if (form.is_valid()):
+            form.save()
+
+    context = {'form':form}
+    return render(request, 'BrilliantPrinters_app/profile.html', context)
 
 
-
-
-
-
-
-
-
-
-
-
-# Question Views
+#---------------------------------------------
+#               Question Views
+#---------------------------------------------
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['__all__'])
+@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
     form = QuestionForm()
 
@@ -103,7 +99,7 @@ def createQuestion(request):
 #
 #
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['__all__'])
+@allowed_users(allowed_roles=['regular_user'])
 def deleteQuestion(request, question_id):
 
     # Store project object in project variable
@@ -120,7 +116,7 @@ def deleteQuestion(request, question_id):
 
 #
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['__all__'])
+@allowed_users(allowed_roles=['regular_user'])
 def updateQuestion(request, question_id):
     # Store project object in project variable
     question = Question.objects.get(id=question_id)
