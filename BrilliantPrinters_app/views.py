@@ -80,15 +80,12 @@ def profile(request):
 #@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
     form = QuestionForm()
+
     user = User.objects.get(id=request.user.id)
     respondent = Respondent.objects.get(user=user)
     respondent_id = respondent.id
 
     if request.method == 'POST':
-
-        #user = User.objects.get(id=request.user.id)
-        #respondent = Respondent.objects.get(user=user)
-        #respondent_id = respondent.id
 
         question_data = request.POST.copy()
         question_data['respondent_id'] = respondent_id

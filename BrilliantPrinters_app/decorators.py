@@ -18,7 +18,7 @@ def allowed_users(allowed_roles=[]):
             if (request.user.groups.exists()):
 
                 # Store all groups types in group variable
-                group = request.user.groups.all()
+                group = request.user.groups.all()[0].name
 
             # Check if any of the groups in the group list match a group in allowed_roles
             if (group in allowed_roles):
