@@ -3,9 +3,11 @@ from django.http import HttpResponse
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User, Group
+from django.contrib import messages
 
 from .decorators import allowed_users
-from .forms import QuestionForm
+from .forms import QuestionForm, UserCreationForm
 from .models import Question
 
 # Create your views here.
@@ -28,11 +30,29 @@ def index(request):
 
 
 
-#def registerUser(request):
+def registerUser(request):
 
+    registerForm = UserCreationForm()
 
+    if (request.method == 'POST'):
+        registerForm = UserCreationForm(request.POST)
 
+        if (registerForm.is_valid()):
 
+            user = registerForm.save()                              # Save form to user variable
+            username = registerForm.cleaned_data.get('username')    # Get Username
+            group = Group.objects.get(name='RegularUser')           # Get group
+            newUser.groups.add(group)                               # Add user to group
+            newUser = User.objects.create(user)                     # Create new user
+            newUser.save()                                          # Save new user
+            messages.success(request, 'Registration complete for ' + username) # Send success message
+             
+            # Redirtect to login page
+            return redirect('login')
+    
+
+        context = {'form':registerForm}
+        return render(request, 'registration/register.html', context)
 
 # Account Views
 @login_required(login_url='login')
