@@ -1,4 +1,3 @@
-from typing import Any
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import generic
@@ -12,14 +11,13 @@ from .forms import QuestionForm, CreateUserForm, ProfileForm
 from .models import Question, Respondent
 
 
-
 # Question list and detail views
 class QuestionListView(LoginRequiredMixin, generic.ListView):
     model = Question
 
 class QuestionDetailView(LoginRequiredMixin, generic.DetailView):
     model = Question
-    
+
 
 
 # Homepage
@@ -43,7 +41,6 @@ def registerUser(request):
             group = Group.objects.get(name='regular_user')           # Get group
             user.groups.add(group)                                  # Add User to group
             newRespondent = Respondent.objects.create(user=user)    # Create Respondent
-            newRespondent.username = username
             newRespondent.save()                                    # Save new respondent
             messages.success(request, 'Registration complete for ' + username) # Send success message
              
@@ -78,6 +75,7 @@ def profile(request):
 #---------------------------------------------
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #@login_required(login_url='login')
 #@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
@@ -93,12 +91,20 @@ def createQuestion(request):
 def createQuestion(request):
     form = QuestionForm()
 >>>>>>> parent of 6632b60 (worksd)
+=======
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['regular_user'])
+def createQuestion(request, respondent_id):
+    form = QuestionForm()
+    respondent = Respondent.objects.get(pk=respondent_id)
+>>>>>>> parent of 6951726 (fe)
 
     if request.method == 'POST':
         question_data = request.POST.copy()
 
         form = QuestionForm(question_data)
         if form.is_valid():
+<<<<<<< HEAD
 <<<<<<< HEAD
             question = form.save()  # Save the form
             question.save()         # Save question
@@ -113,6 +119,16 @@ def createQuestion(request):
             # Set the projects parent portfolio
             question.save()
 >>>>>>> parent of 6632b60 (worksd)
+=======
+            # Save the form
+            question = form.save()
+
+            # Set the question parent user
+            question.respondent = respondent
+
+            # Save question
+            question.save()
+>>>>>>> parent of 6951726 (fe)
 
             # Redirect back to portfolio details page
             return redirect('question_list')
@@ -160,4 +176,3 @@ def updateQuestion(request, question_id):
         
     context = {'form':form}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
-
