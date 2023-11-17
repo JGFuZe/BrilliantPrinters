@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class Respondent(models.Model):
     #replies = models.ForeignKey(QuestionReply, on_delete=models.CASCADE, default=None)
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-
+    
     
     #Returns the URL to access a particular instance of MyModelName.
     #if you define this method then Django will automatically
