@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import  Group
 from django.contrib import messages
 
 from .decorators import allowed_users
@@ -77,6 +77,7 @@ def profile(request):
 #               Question Views
 #---------------------------------------------
 
+<<<<<<< HEAD
 #@login_required(login_url='login')
 #@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
@@ -86,19 +87,32 @@ def createQuestion(request):
     print()
     respondent = Respondent.objects.get(user=user)
     respondent_id = respondent.id
+=======
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['regular_user'])
+def createQuestion(request):
+    form = QuestionForm()
+>>>>>>> parent of 6632b60 (worksd)
 
     if request.method == 'POST':
         question_data = request.POST.copy()
-        question_data['respondent_id'] = respondent_id
 
         form = QuestionForm(question_data)
         if form.is_valid():
+<<<<<<< HEAD
             question = form.save()  # Save the form
             question.save()         # Save question
             question.respondent = respondent
             
             # 
             respondent.question = question
+=======
+            # Save the form
+            question = form.save()
+
+            # Set the projects parent portfolio
+            question.save()
+>>>>>>> parent of 6632b60 (worksd)
 
             # Redirect back to portfolio details page
             return redirect('question_list')
