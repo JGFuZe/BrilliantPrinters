@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-
 class Question(models.Model):
     title = models.CharField(max_length=200, blank=False)
     description = models.TextField(max_length=200, blank=False)
@@ -22,10 +21,14 @@ class Question(models.Model):
         return reverse('question_detail', args=[str(self.id)])
     
 
+class QuestionReply(models.Model):
+    question = models.OneToOneField(Question, on_delete=models.CASCADE, null=True)
+
+
+
+
 class Respondent(models.Model):
-    
-
-
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, default=None)
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 
     
