@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import generic
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .decorators import allowed_users
 from .forms import QuestionForm
 from .models import Question
 
@@ -10,10 +13,10 @@ from .models import Question
 # Class Views
 
 # Question list and detail views
-class QuestionListView(generic.ListView):
+class QuestionListView(LoginRequiredMixin, generic.ListView):
     model = Question
 
-class QuestionDetailView(generic.DetailView):
+class QuestionDetailView(LoginRequiredMixin, generic.DetailView):
     model = Question
 
 
@@ -25,8 +28,14 @@ def index(request):
 
 
 
+#def registerUser(request):
+
+
+
+
 
 # Account Views
+@login_required(login_url='login')
 def logoutUser(request):
     return redirect('index')
 
@@ -44,6 +53,9 @@ def logoutUser(request):
 
 
 # Question Views
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['__all__'])
 def createQuestion(request):
     form = QuestionForm()
 
@@ -66,6 +78,8 @@ def createQuestion(request):
 
 #
 #
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['__all__'])
 def deleteQuestion(request, question_id):
 
     # Store project object in project variable
@@ -81,6 +95,8 @@ def deleteQuestion(request, question_id):
 
 
 #
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['__all__'])
 def updateQuestion(request, question_id):
     # Store project object in project variable
     question = Question.objects.get(id=question_id)
