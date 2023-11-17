@@ -10,8 +10,10 @@
     <ul> 
         {% for question in question_list %}
             <li>
-                <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
-                <a class="btn btn-primary" href="{{ question.get_absolute_url }}" role="button">View</a>
+                {% if question.id == user.question.id %}
+                    <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+                    <a class="btn btn-primary" href="{{ question.get_absolute_url }}" role="button">View</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
