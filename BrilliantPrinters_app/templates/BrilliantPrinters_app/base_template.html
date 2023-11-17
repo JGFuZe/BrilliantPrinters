@@ -13,25 +13,30 @@
 
     <!-- Navbar -->
     <div>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary ">
             <div class="container-fluid">
+
+                <!-- Left side of navbar -->
                 <div class="navbar-header">
-                    <img src="{% static 'images/BG_LOGO.png' %}">
+                    <a href="{% url 'index' %}"><img src="{% static 'images/BG_LOGO.png' %}"></a>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="{% url 'index' %}">Home</a></li>
-                    <li><a href="{% url 'question_list' %}">Questions</a></li>                    
+                    <li><a href="{% url 'question_list' %}">Questions</a></li>
                 </ul>
 
-
-                <button class="btn btn-primary dropdown-toggle navbar-right" type="button" data-toggle="dropdown">Account <span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+ <!-- <button class="btn btn-primary dropdown-toggle navbar-right" type="button" data-toggle="dropdown">Account <span class="caret"></span></button> -->
+                <!-- Right side of navbar -->         
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="dropdown-toggle " data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class=""><a href="{% url 'logout' %}">Profile <span class="glyphicon glyphicon-user"></span></a></li>
+                            <li class=""><a href="{% url 'login' %}">Login</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
                 </ul>
-
-
-
             </div>
         </nav>
     </div>

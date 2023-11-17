@@ -25,8 +25,26 @@ def index(request):
 
 
 
-def createQuestion(request):
 
+# Account Views
+def logoutUser(request):
+    return redirect('index')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Question Views
+def createQuestion(request):
     form = QuestionForm()
 
     if request.method == 'POST':

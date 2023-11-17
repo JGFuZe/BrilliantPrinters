@@ -12,6 +12,19 @@ urlpatterns = [
     path('questions/delete_question/<int:question_id>', views.deleteQuestion, name='delete_question'),
     path('questions/update_question/<int:question_id>', views.updateQuestion, name='update_question'),
     
+
     # Account Stuff
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
+
+
+    #path('accounts/register', name='register_user'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('registration/logout', views.logoutUser ,name='logout'),
+
+    #path('accounts/password_change/', name='password_change'),
+    #path('accounts/password_change/done', name='password_change_done'),
+    #path('accounts/password_reset', name='password_reset'),
+    #path('accounts/password_reset/done', name='password_reset_done'),
+    #path('accounts/reset/<uidb64>/<token>', name='password_reset_confirm'),
+    #path('accounts/reset/done', name='password_reset_confirm'),
 ]
