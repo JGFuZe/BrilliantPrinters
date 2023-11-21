@@ -9,7 +9,7 @@ from django.contrib import messages
 
 from .decorators import allowed_users
 from .forms import QuestionForm, CreateUserForm, ProfileForm
-from .models import Question, Respondent
+from .models import Question, Respondent, QuestionFile
 
 
 
@@ -91,13 +91,13 @@ def createQuestion(request):
         question_data = request.POST.copy()             #
         question_data['respondent_id'] = respondentId   #
         form = QuestionForm(question_data)              #
+        qFiles = request.FILES.getlist('questionFiles')
 
         if form.is_valid():                     # If form is valid
 
-            qFiles = request.FILES.getlist('questionFiles')
             for qFile in qFiles:
-                image_ins = Image(pic = image)
-                image_ins.save()
+                newFile = QuestionFile.objects.create(file=qFile)
+                newFile.save()
 
 
 

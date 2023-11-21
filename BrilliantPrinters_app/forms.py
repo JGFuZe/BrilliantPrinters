@@ -10,16 +10,16 @@ from django.contrib.auth.models import User
 
 
 class QuestionForm(ModelForm):
-    questionFiles = forms.FileField(widget = forms.TextInput(attrs={
-        "name": "images",
-        "type": "File",
-        "class": "form-control",
-        "multiple": "True",
-    }), label = "")
+    files = forms.FileField(widget = forms.TextInput(attrs={
+            "name": "images",
+            "type": "File",
+            "class": "form-control",
+            "multiple": "True",
+        }), label = "")
 
     class Meta:
         model = Question
-        fields =['title', 'description', 'questionFiles']
+        fields =['title', 'description', 'files']
 
 
 class ProfileForm(ModelForm):

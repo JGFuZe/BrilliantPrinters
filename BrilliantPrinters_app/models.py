@@ -32,7 +32,7 @@ class Question(models.Model):
     respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True)
 
     #
-    files = models.ForeignKey(QuestionFile, on_delete=models.CASCADE, null=True)
+    files = models.ForeignKey(QuestionFile, on_delete=models.CASCADE, null=True, blank=True)
 
     #Define default String to return the name for representing the Model object."
     def __str__(self):
