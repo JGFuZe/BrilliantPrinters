@@ -26,7 +26,7 @@ class Question(models.Model):
     answered = models.BooleanField(default=False)
     respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True)
 
-    file = models.FileField(upload_to='Text_files')
+    file = models.FileField(upload_to='Text_files', null=True)
 
     #Define default String to return the name for representing the Model object."
     def __str__(self):
