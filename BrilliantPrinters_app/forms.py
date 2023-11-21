@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 
 class QuestionForm(ModelForm):
-    file = forms.FileField(widget = forms.TextInput(attrs={
+    questionFiles = forms.FileField(widget = forms.TextInput(attrs={
         "name": "images",
         "type": "File",
         "class": "form-control",
@@ -19,7 +19,7 @@ class QuestionForm(ModelForm):
 
     class Meta:
         model = Question
-        fields =['title', 'description', 'file']
+        fields =['title', 'description', 'questionFiles']
 
 
 class ProfileForm(ModelForm):

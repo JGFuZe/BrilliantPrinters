@@ -1,5 +1,7 @@
 from django.urls import include, path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
@@ -27,3 +29,6 @@ urlpatterns = [
     #path('accounts/reset/<uidb64>/<token>', name='password_reset_confirm'),
     #path('accounts/reset/done', name='password_reset_confirm'),
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

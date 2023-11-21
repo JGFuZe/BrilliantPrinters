@@ -93,6 +93,16 @@ def createQuestion(request):
         form = QuestionForm(question_data)              #
 
         if form.is_valid():                     # If form is valid
+
+            qFiles = request.FILES.getlist('questionFiles')
+            for qFile in qFiles:
+                image_ins = Image(pic = image)
+                image_ins.save()
+
+
+
+
+
             question = form.save()              # Save the form
             question.respondent = respondent    # set the question respondent with respondent object who made the question
             question.save()                     # Save question

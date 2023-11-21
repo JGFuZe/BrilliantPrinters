@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
+class QuestionFile(models.Model):
+    file = models.FileField(upload_to='Text_files', null=True)
+    
 
 
 class Respondent(models.Model):
@@ -24,9 +27,12 @@ class Question(models.Model):
     title = models.CharField(max_length=200, blank=False)
     description = models.TextField(max_length=200, blank=False)
     answered = models.BooleanField(default=False)
+
+    #
     respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True)
 
-    file = models.FileField(upload_to='Text_files', null=True)
+    #
+    files = models.ForeignKey(QuestionFile, on_delete=models.CASCADE, null=True)
 
     #Define default String to return the name for representing the Model object."
     def __str__(self):
