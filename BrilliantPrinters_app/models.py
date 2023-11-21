@@ -26,6 +26,8 @@ class Question(models.Model):
     answered = models.BooleanField(default=False)
     respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True)
 
+    file = models.FileField(upload_to='Text_files')
+
     #Define default String to return the name for representing the Model object."
     def __str__(self):
         return self.title
@@ -42,7 +44,3 @@ class QuestionReply(models.Model):
     question = models.OneToOneField(Question, on_delete=models.CASCADE, null=True)
     description = models.TextField(max_length=200, blank=False)
 
-
-
-class TextFile(models.Model):
-    file = models.FileField(upload_to='Text_files')

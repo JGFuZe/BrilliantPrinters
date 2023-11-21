@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Question, TextFile
+from .models import Question
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
