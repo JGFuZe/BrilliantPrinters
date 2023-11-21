@@ -43,3 +43,6 @@ class QuestionReply(models.Model):
     description = models.TextField(max_length=200, blank=False)
 
 
+
+class TextFile(models.Model):
+    file = models.FileField(upload_to='Text_files')

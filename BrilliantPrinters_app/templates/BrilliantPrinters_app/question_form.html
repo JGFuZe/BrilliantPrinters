@@ -5,7 +5,19 @@
 {% block content %}
   <form action="" method="POST">
     {% csrf_token %}
-    <table>{{ form.as_table }}</table>
+    <table>{{ questionForm.as_table }}</table>
     <input type="submit" name="Submit" />
   </form>
+
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="fileSubmitForm" class="form-label">Upload Files Here</label>
+      {{fileSubmitForm}}
+    </div>
+    <button type="submit" class="btn btn-outline-primary ">Submit</button>
+</form>
+
+
 {% endblock %}
