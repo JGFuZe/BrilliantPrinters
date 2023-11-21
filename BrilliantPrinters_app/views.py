@@ -79,47 +79,28 @@ def profile(request):
 #@login_required(login_url='login')
 #@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
-    questionForm = QuestionForm()
-    fileForm = FileForm()
+    form = QuestionForm() #
 
-    user = User.objects.get(id=request.user.id)
-    respondent = Respondent.objects.get(user=user)
-    respondent_id = respondent.id
+    user = User.objects.get(id=request.user.id)     # Get current user
+    respondent = Respondent.objects.get(user=user)  # Get Respondent object based on matching user object
+    respondentId = respondent.id                    # Store the Respondent object's id from database
 
-    #
-    if ('questionSubmit' in request.POST):
-        questionData = request.POST.copy()
-        questionData['respondent_id'] = respondent_id
+    if request.method == 'POST':
 
-        #
-        questionForm = QuestionForm(questionData, prefix='')
-        
-        if questionForm.is_valid():
-            question = questionForm.save()  # Save the form
-            question.respondent = respondent
-            question.save()         # Save question
-            print(question.respondent)
+        # Copy form data to list and set the respondent id
+        question_data = request.POST.copy()             #
+        question_data['respondent_id'] = respondentId   #
+        form = QuestionForm(question_data)              #
+
+        if form.is_valid():                     # If form is valid
+            question = form.save()              # Save the form
+            question.respondent = respondent    # set the question respondent with respondent object who made the question
+            question.save()                     # Save question
 
             # Redirect back to portfolio details page
             return redirect('question_list')
-
-    elif ('fileSubmit' in request.POST):
-        fileData = request.POST.copy()
-        fileForm = FileForm(fileData, prefix='')
-
-        if (fileForm.is_valid()):
-            file = fileForm.save()  # save form data object
-            file.save()         #
-
-            return redirect('question_list')
-
-    else:
-        questionForm = QuestionForm(prefix='')
-        fileForm = FileForm(prefix='')
-
-    
         
-    context = {'questionForm':questionForm, 'fileSubmitForm':fileForm}
+    context = {'form':form}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
 
 #

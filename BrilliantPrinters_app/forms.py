@@ -20,9 +20,16 @@ class FileForm(ModelForm):
 
 
 class QuestionForm(ModelForm):
+    file = forms.FileField(widget = forms.TextInput(attrs={
+        "name": "images",
+        "type": "File",
+        "class": "form-control",
+        "multiple": "True",
+    }), label = "")
+
     class Meta:
         model = Question
-        fields =['title', 'description']
+        fields =['title', 'description', 'file']
 
 
 class ProfileForm(ModelForm):
