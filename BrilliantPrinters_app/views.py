@@ -8,7 +8,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages
 
 from .decorators import allowed_users
-from .forms import QuestionForm, CreateUserForm, ProfileForm, FileForm
+from .forms import QuestionForm, CreateUserForm, ProfileForm
 from .models import Question, Respondent
 
 
