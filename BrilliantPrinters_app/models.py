@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class QuestionFile(models.Model):
-    file = models.FileField(upload_to='Text_files', null=True)
+    file = models.FileField(upload_to='documents/%Y/%m/%d', blank=True, null=True)
     
 
 

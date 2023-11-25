@@ -28,7 +28,6 @@ urlpatterns = [
     #path('accounts/password_reset/done', name='password_reset_done'),
     #path('accounts/reset/<uidb64>/<token>', name='password_reset_confirm'),
     #path('accounts/reset/done', name='password_reset_confirm'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

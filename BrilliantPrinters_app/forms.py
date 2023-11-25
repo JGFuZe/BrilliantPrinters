@@ -1,25 +1,26 @@
-from django import forms
 from django.forms import ModelForm
-from .models import Question
+from .models import Question, QuestionFile
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ClearableFileInput
 from django.contrib.auth.models import User
-
 
 #create class for project form
 
 
 
-class QuestionForm(ModelForm):
-    files = forms.FileField(widget = forms.TextInput(attrs={
-            "name": "images",
-            "type": "File",
-            "class": "form-control",
-            "multiple": "True",
-        }), label = "")
-
+class QuestionForm(ModelForm):    
     class Meta:
         model = Question
         fields =['title', 'description', 'files']
+
+
+class FileForm(ModelForm):
+    class Meta:
+        model = QuestionFile
+        fields = ['file']
+        widgets = {
+            'file': ClearableFileInput(attrs={'‘multiple’': True}),
+        }
 
 
 class ProfileForm(ModelForm):

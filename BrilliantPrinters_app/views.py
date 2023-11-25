@@ -1,3 +1,4 @@
+import datetime
 from typing import Any
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -7,10 +8,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 
-from .decorators import allowed_users
-from .forms import QuestionForm, CreateUserForm, ProfileForm
-from .models import Question, Respondent, QuestionFile
+from django_project import settings
 
+from .decorators import allowed_users
+from .forms import QuestionForm, CreateUserForm, ProfileForm, FileForm
+from .models import Question, Respondent, QuestionFile
 
 
 # Question list and detail views
@@ -76,41 +78,59 @@ def profile(request):
 #               Question Views
 #---------------------------------------------
 
+
+def handle_uploaded_file(fileToCreate):
+    with open(settings.MEDIA_ROOT, "wb+") as destination:
+        for chunk in fileToCreate.chunks():
+            destination.write(chunk)
+
+
+
+
+
+
+
 #@login_required(login_url='login')
 #@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
-    form = QuestionForm() #
+    questionForm = QuestionForm(prefix='questionForm')
+    fileSubmitForm = FileForm(prefix='fileForm')
 
     user = User.objects.get(id=request.user.id)     # Get current user
     respondent = Respondent.objects.get(user=user)  # Get Respondent object based on matching user object
-    respondentId = respondent.id                    # Store the Respondent object's id from database
+    documents = QuestionFile.objects.all()
 
     if request.method == 'POST':
-
-        # Copy form data to list and set the respondent id
-        question_data = request.POST.copy()             #
-        question_data['respondent_id'] = respondentId   #
-        form = QuestionForm(question_data)              #
-        qFiles = request.FILES.getlist('questionFiles')
-
-        if form.is_valid():                     # If form is valid
-
-            for qFile in qFiles:
-                newFile = QuestionFile.objects.create(file=qFile)
-                newFile.save()
-
-
-
-
-
-            question = form.save()              # Save the form
-            question.respondent = respondent    # set the question respondent with respondent object who made the question
-            question.save()                     # Save question
-
-            # Redirect back to portfolio details page
+        
+        if ('questionForm' in request.POST):
+            questionData = request.POST.copy()
+            questionForm = QuestionForm(questionData)
+            
+            if (questionForm.is_valid):
+                question = questionForm.save()              # Save the form
+                question.respondent = respondent    # set the question respondent with respondent object who made the question
+                question.save()                     # Save question
+                
+                
+        else:
+            questionForm = QuestionForm(prefix='questionForm')
+            
+            
+        if ('fileForm' in request.POST):
+            questionFiles = request.FILES.getlist('files')
+            
+            for f in questionFiles:
+                fileInstance = QuestionFile(file=f)
+                fileInstance.save()
+                
+        else:
+            fileSubmitForm = FileForm(prefix='fileForm')
+        
+        
+        # Redirect back to portfolio details page
             return redirect('question_list')
         
-    context = {'form':form}
+    context = {'questionForm':questionForm, 'fileSubmitForm':fileSubmitForm}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
 
 #
@@ -153,4 +173,6 @@ def updateQuestion(request, question_id):
         
     context = {'form':form}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
+
+
 

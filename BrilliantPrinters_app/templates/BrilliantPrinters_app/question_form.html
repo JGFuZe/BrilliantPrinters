@@ -5,8 +5,9 @@
 {% block content %}
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <table>{{ form.as_table }}</table>
-    <input type="submit" name="Submit" />
+    <table>{{ questionForm.as_table }}</table>
+    <table>{{ fileSubmitForm.as_table }}</table>
+    <button type="submit">Submit</button>
   </form>
 
 
