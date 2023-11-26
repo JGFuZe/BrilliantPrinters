@@ -98,7 +98,8 @@ def createQuestion(request):
     if request.method == 'POST':
         
         if ('questionForm' in request.POST):
-            questionForm = QuestionForm(request.POST)
+            questionData = request.POST.copy()
+            questionForm = QuestionForm(questionData)
             
             if (questionForm.is_valid):
                 question = questionForm.save()              # Save the form
@@ -106,7 +107,12 @@ def createQuestion(request):
                 question.save()                     # Save question
 
             
-        
+        if ('fileForm' in request.POST):
+            questionFiles = request.FILES.getlist('files')
+            
+            for f in questionFiles:
+                fileInstance = QuestionFile(file=f)
+                fileInstance.save()
 
         # Redirect back to portfolio details page
         return redirect('question_list')
