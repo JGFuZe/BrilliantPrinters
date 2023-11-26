@@ -89,37 +89,32 @@ def handle_uploaded_file(fileToCreate):
 #@login_required(login_url='login')
 #@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
-    questionForm = QuestionForm(prefix='questionForm')
-    fileSubmitForm = FileForm(prefix='fileForm')
+    questionForm = QuestionForm()
+    fileSubmitForm = FileForm()
 
     user = User.objects.get(id=request.user.id)     # Get current user
     respondent = Respondent.objects.get(user=user)  # Get Respondent object based on matching user object
 
     if request.method == 'POST':
-        
-        if ('questionForm' in request.POST):
-            questionData = request.POST.copy()
-            questionForm = QuestionForm(questionData)
-            
-            if (questionForm.is_valid):
-                question = questionForm.save()              # Save the form
-                question.respondent = respondent    # set the question respondent with respondent object who made the question
-                question.save()                     # Save question
+        questionForm = QuestionForm(request.POST or None)
+        fileSubmitForm = FileForm(request.POST or None, request.FILES)
 
-            
-        if ('fileForm' in request.POST):
-            questionFiles = request.FILES.getlist('files')
-            
-            for f in questionFiles:
-                fileInstance = QuestionFile(file=f)
-                fileInstance.save()
+        print('first')
+        if all([questionForm.is_valid(), fileSubmitForm.is_valid()]):
+            question = questionForm.save()              # Save the form
+            question.respondent = respondent    # set the question respondent with respondent object who made the question
+            question.save()                     # Save question
+           
+           
+            print('second')
+            file = fileSubmitForm.save()
+
+            file.save()
+    
+
 
         # Redirect back to portfolio details page
         return redirect('question_list')
-        
-    else:
-        fileSubmitForm = FileForm(prefix='fileForm')
-        questionForm = QuestionForm(prefix='questionForm')
 
 
     context = {'questionForm':questionForm, 'fileSubmitForm':fileSubmitForm}
