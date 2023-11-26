@@ -86,10 +86,6 @@ def handle_uploaded_file(fileToCreate):
 
 
 
-
-
-
-
 #@login_required(login_url='login')
 #@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
@@ -98,38 +94,28 @@ def createQuestion(request):
 
     user = User.objects.get(id=request.user.id)     # Get current user
     respondent = Respondent.objects.get(user=user)  # Get Respondent object based on matching user object
-    documents = QuestionFile.objects.all()
 
     if request.method == 'POST':
         
         if ('questionForm' in request.POST):
-            questionData = request.POST.copy()
-            questionForm = QuestionForm(questionData)
+            questionForm = QuestionForm(request.POST)
             
             if (questionForm.is_valid):
                 question = questionForm.save()              # Save the form
                 question.respondent = respondent    # set the question respondent with respondent object who made the question
                 question.save()                     # Save question
-                
-                
-        else:
-            questionForm = QuestionForm(prefix='questionForm')
+
             
-            
-        if ('fileForm' in request.POST):
-            questionFiles = request.FILES.getlist('files')
-            
-            for f in questionFiles:
-                fileInstance = QuestionFile(file=f)
-                fileInstance.save()
-                
-        else:
-            fileSubmitForm = FileForm(prefix='fileForm')
         
-        
+
         # Redirect back to portfolio details page
-            return redirect('question_list')
+        return redirect('question_list')
         
+    else:
+        fileSubmitForm = FileForm(prefix='fileForm')
+        questionForm = QuestionForm(prefix='questionForm')
+
+
     context = {'questionForm':questionForm, 'fileSubmitForm':fileSubmitForm}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
 

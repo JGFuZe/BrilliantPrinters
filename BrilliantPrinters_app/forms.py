@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 class QuestionForm(ModelForm):    
     class Meta:
         model = Question
-        fields =['title', 'description', 'files']
+        fields =['title', 'description']
 
 
 class FileForm(ModelForm):

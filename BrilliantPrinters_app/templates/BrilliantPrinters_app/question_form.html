@@ -4,9 +4,9 @@
 <!-- Replace block content in base_template.html -->
 {% block content %}
   <form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
     <table>{{ questionForm.as_table }}</table>
     <table>{{ fileSubmitForm.as_table }}</table>
+    {% csrf_token %}
     <button type="submit">Submit</button>
   </form>
 
