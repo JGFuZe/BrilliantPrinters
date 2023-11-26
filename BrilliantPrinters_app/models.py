@@ -1,12 +1,9 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django import forms
 # Create your models here.
 
-
-class QuestionFile(models.Model):
-    file = models.FileField(upload_to='documents/%Y/%m', blank=True, null=True)
-    
 
 
 class Respondent(models.Model):
@@ -31,9 +28,6 @@ class Question(models.Model):
     #
     respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True)
 
-    #
-    files = models.ForeignKey(QuestionFile, on_delete=models.CASCADE, null=True, blank=True)
-
     #Define default String to return the name for representing the Model object."
     def __str__(self):
         return self.title
@@ -44,6 +38,14 @@ class Question(models.Model):
     def get_absolute_url(self):
         return reverse('question_detail', args=[str(self.id)])
     
+
+
+class QuestionFile(models.Model):
+    file = models.FileField(upload_to='documents/%Y/%m', blank=True, null=True)
+    parentQuestion = models.OneToOneField(Question, on_delete=models.CASCADE, null=True)
+    fileRespondent = models.OneToOneField(Respondent, on_delete=models.CASCADE, null=True)
+
+
 
 #WORKING ONN
 class QuestionReply(models.Model):

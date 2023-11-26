@@ -13,16 +13,15 @@ from django_project import settings
 from .decorators import allowed_users
 from .forms import QuestionForm, CreateUserForm, ProfileForm, FileForm
 from .models import Question, Respondent, QuestionFile
-
+from django.contrib.auth import logout
 
 # Question list and detail views
-class QuestionListView(LoginRequiredMixin, generic.ListView):
+class QuestionListView(generic.ListView):
     model = Question
 
-class QuestionDetailView(LoginRequiredMixin, generic.DetailView):
+class QuestionDetailView(generic.DetailView):
     model = Question
     
-
 
 # Homepage
 def index(request):
@@ -33,7 +32,6 @@ def index(request):
 #---------------------------------------------
 
 def registerUser(request):
-
     registerForm = CreateUserForm()
 
     if (request.method == 'POST'):
@@ -55,11 +53,18 @@ def registerUser(request):
     return render(request, 'registration/register_user.html', context)
 
 
+#
 @login_required(login_url='login')
 def logoutUser(request):
-    return redirect('index')
+    logout(request)
+
+    return render(request, 'registration/logout.html')
 
 
+#
+#
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['regular_user'])
 def profile(request):
     user = request.user    #
     form = ProfileForm(instance=user) #
@@ -78,16 +83,8 @@ def profile(request):
 #               Question Views
 #---------------------------------------------
 
-
-def handle_uploaded_file(fileToCreate):
-    with open(settings.MEDIA_ROOT, "wb+") as destination:
-        for chunk in fileToCreate.chunks():
-            destination.write(chunk)
-
-
-
-#@login_required(login_url='login')
-#@allowed_users(allowed_roles=['regular_user'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
     questionForm = QuestionForm()
     fileSubmitForm = FileForm()
@@ -97,25 +94,20 @@ def createQuestion(request):
 
     if request.method == 'POST':
         questionForm = QuestionForm(request.POST or None)
-        fileSubmitForm = FileForm(request.POST or None, request.FILES)
+        fileSubmitForm = FileForm(request.POST or None, request.FILES or None)
 
-        print('first')
         if all([questionForm.is_valid(), fileSubmitForm.is_valid()]):
-            question = questionForm.save()              # Save the form
-            question.respondent = respondent    # set the question respondent with respondent object who made the question
+            question = questionForm.save()      # Save the form
+            question.respondent = respondent    # Set the question respondent with respondent object who made the question
             question.save()                     # Save question
            
-           
-            print('second')
-            file = fileSubmitForm.save()
-
-            file.save()
+            file = fileSubmitForm.save()        # Create and save file object
+            file.parentQuestion = question      # Set file's parent question
+            file.fileRespondent = respondent    # Set files owner
+            file.save()                         # Save file
     
-
-
         # Redirect back to portfolio details page
         return redirect('question_list')
-
 
     context = {'questionForm':questionForm, 'fileSubmitForm':fileSubmitForm}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
@@ -126,7 +118,7 @@ def createQuestion(request):
 @allowed_users(allowed_roles=['regular_user'])
 def deleteQuestion(request, question_id):
 
-    # Store project object in project variable
+    # Get question object based on its id
     question = Question.objects.get(id=question_id)
 
     if request.method == 'POST':
@@ -139,10 +131,10 @@ def deleteQuestion(request, question_id):
 
 
 #
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['regular_user'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['regular_user'])
 def updateQuestion(request, question_id):
-    # Store project object in project variable
+    # Get question object based on its id
     question = Question.objects.get(id=question_id)
 
 

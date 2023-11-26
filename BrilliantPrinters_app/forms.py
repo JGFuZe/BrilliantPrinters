@@ -18,9 +18,6 @@ class FileForm(ModelForm):
     class Meta:
         model = QuestionFile
         fields = ['file']
-        widgets = {
-            'file': ClearableFileInput(attrs={'‘multiple’': True}),
-        }
 
 
 class ProfileForm(ModelForm):

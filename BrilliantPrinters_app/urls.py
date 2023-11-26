@@ -17,6 +17,7 @@ urlpatterns = [
 
     # Account Stuff
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/logout', views.logoutUser ,name='logout'),
     path('accounts/register', views.registerUser, name='register_user'),
     
     path('profile', views.profile, name='profile'),
