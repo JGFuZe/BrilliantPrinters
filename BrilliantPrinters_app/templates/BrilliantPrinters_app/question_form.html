@@ -3,11 +3,12 @@
 
 <!-- Replace block content in base_template.html -->
 {% block content %}
+  <title>test</title>
   <form action="" method="POST" enctype="multipart/form-data">
     <table>{{ questionForm.as_table }}</table>
     <table>{{ fileSubmitForm.as_table }}</table>
     {% csrf_token %}
-    <button type="submit">Submit</button>
+    <input id='submit' type='submit' value='Submit'></input>
   </form>
 
 

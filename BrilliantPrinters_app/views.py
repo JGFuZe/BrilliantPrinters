@@ -6,9 +6,9 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
-from django.contrib import messages
 
 from django_project import settings
+from django.contrib import messages
 
 from .decorators import allowed_users
 from .forms import QuestionForm, CreateUserForm, ProfileForm, FileForm
@@ -83,8 +83,8 @@ def profile(request):
 #               Question Views
 #---------------------------------------------
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['regular_user'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
     questionForm = QuestionForm()
     fileSubmitForm = FileForm()
