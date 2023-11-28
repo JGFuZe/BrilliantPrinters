@@ -15,7 +15,7 @@ from .views import *
 
 
 # Form Tests
-"""""
+
 class RegisterFromTest(LiveServerTestCase):
     
     def test_register_form(self):
@@ -74,7 +74,7 @@ class LoginFormTest(LiveServerTestCase):
         # Confrim Users name shows up in top right so look for that element
         assert "testuser" in driver.page_source
 
-"""""
+
 
 
 # Model Tests
