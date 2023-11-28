@@ -25,8 +25,7 @@ class Question(models.Model):
     description = models.TextField(max_length=200, blank=False)
     answered = models.BooleanField(default=False)
 
-    #
-    respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True)
+    respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True, default=None)
 
     #Define default String to return the name for representing the Model object."
     def __str__(self):

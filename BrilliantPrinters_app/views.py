@@ -83,8 +83,8 @@ def profile(request):
 #               Question Views
 #---------------------------------------------
 
-#@login_required(login_url='login')
-#@allowed_users(allowed_roles=['regular_user'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['regular_user'])
 def createQuestion(request):
     questionForm = QuestionForm()
     fileSubmitForm = FileForm()
@@ -131,8 +131,8 @@ def deleteQuestion(request, question_id):
 
 
 #
-#@login_required(login_url='login')
-#@allowed_users(allowed_roles=['regular_user'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['regular_user'])
 def updateQuestion(request, question_id):
     # Get question object based on its id
     question = Question.objects.get(id=question_id)
@@ -140,7 +140,7 @@ def updateQuestion(request, question_id):
 
     if request.method == 'POST':
         # Update form with current information
-        form = QuestionForm(request.POST, instance=question)
+        form = QuestionForm(request.POST, request.FILES, instance=question)
         if form.is_valid():
             # Save the form
             question = form.save()
@@ -150,7 +150,7 @@ def updateQuestion(request, question_id):
     else:
         form = QuestionForm(instance=question)
         
-    context = {'form':form}
+    context = {'questionForm':form}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
 
 
