@@ -42,7 +42,7 @@ class Question(models.Model):
 class QuestionFile(models.Model):
     file = models.FileField(upload_to='documents/%Y/%m', blank=True, null=True)
     parentQuestion = models.OneToOneField(Question, on_delete=models.CASCADE, null=True)
-    fileRespondent = models.OneToOneField(Respondent, on_delete=models.CASCADE, null=True)
+    fileRespondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, null=True)
 
 
 

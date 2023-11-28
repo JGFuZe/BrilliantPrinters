@@ -6,14 +6,12 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
-
-from django_project import settings
+from django.contrib.auth import logout
 from django.contrib import messages
 
 from .decorators import allowed_users
 from .forms import QuestionForm, CreateUserForm, ProfileForm, FileForm
 from .models import Question, Respondent, QuestionFile
-from django.contrib.auth import logout
 
 # Question list and detail views
 class QuestionListView(generic.ListView):
@@ -21,6 +19,8 @@ class QuestionListView(generic.ListView):
 
 class QuestionDetailView(generic.DetailView):
     model = Question
+
+    
     
 
 # Homepage
@@ -136,21 +136,28 @@ def deleteQuestion(request, question_id):
 def updateQuestion(request, question_id):
     # Get question object based on its id
     question = Question.objects.get(id=question_id)
-
+    fileObj = QuestionFile.objects.get(parentQuestion=question)
 
     if request.method == 'POST':
         # Update form with current information
-        form = QuestionForm(request.POST, request.FILES, instance=question)
-        if form.is_valid():
-            # Save the form
-            question = form.save()
-        
+        questionForm = QuestionForm(request.POST or None, instance=question)
+        fileSubmitForm = FileForm(request.POST or None, request.FILES or None, instance=fileObj)
+
+        # If question form and file form are valid
+        if all([questionForm.is_valid(), fileSubmitForm.is_valid()]):
+            question = questionForm.save()      # Save the form
+            #question.save()                     # Save question
+           
+            file = fileSubmitForm.save()        # Create and save file object
+            #file.save()                         # Save file
+
             # Redirect back to portfolio details page
             return redirect('question_detail', question_id)
     else:
-        form = QuestionForm(instance=question)
+        questionForm = QuestionForm(instance=question)
+        fileForm = FileForm(instance=fileObj)
         
-    context = {'questionForm':form}
+    context = {'questionForm':questionForm, 'fileSubmitForm':fileForm}
     return render(request, 'BrilliantPrinters_app/question_form.html', context)
 
 
