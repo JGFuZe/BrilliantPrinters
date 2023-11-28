@@ -3,9 +3,13 @@
 
 <!-- Replace block content in base_template.html -->
 {% block content %}
-  <form action="" method="POST">
+  <title>test</title>
+  <form action="" method="POST" enctype="multipart/form-data">
+    <table>{{ questionForm.as_table }}</table>
+    <table>{{ fileSubmitForm.as_table }}</table>
     {% csrf_token %}
-    <table>{{ form.as_table }}</table>
-    <input type="submit" name="Submit" />
+    <input id='submit' type='submit' value='Submit'></input>
   </form>
+
+
 {% endblock %}
