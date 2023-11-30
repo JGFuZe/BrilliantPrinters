@@ -3,6 +3,7 @@
 
 <!-- Replace block content in base_template.html -->
 {% block content %}
+  
   <h2>Question Title: {{ question.title }}</h2>
 
   <p>
@@ -11,6 +12,21 @@
   <p>
     <strong>Answered:</strong> {{ question.answered }}
   </p>
+
+  <p><b>Files:</b></p>
+  {% if fileType == "jpg" or fileType == "png"%}
+    <div>
+      <img style="max-width:15%;" src="{{ file.url }}" alt="Uploaded File">
+    </div>  
+  {% elif fileType == "txt" %}
+    <a href="{{file.url}}"><p>Link to Txt File</p></a>
+
+  {% else %}
+    <p>File Type "{{ fileType }}" not supported</p>
+    <p><b>Supported File Types:</b> jpg, png, txt</p>
+
+  {% endif %}
+
 
   {% if question.respondent.user == user %}
     <ul>
@@ -21,5 +37,4 @@
     </ul>
   {% endif %}
 
-  <img src="{{ file_url }}" alt="Uploaded File">
 {% endblock %}

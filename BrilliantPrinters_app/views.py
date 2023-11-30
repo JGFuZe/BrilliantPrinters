@@ -1,4 +1,5 @@
 import datetime
+import os
 from typing import Any
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -20,6 +21,18 @@ class QuestionListView(generic.ListView):
 class QuestionDetailView(generic.DetailView):
     model = Question
 
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        questionFile = QuestionFile.objects.get(parentQuestion=self.get_object())
+        if (questionFile.file):
+            fileType = os.path.splitext(questionFile.file.url)
+            fileExtension = fileType[1].replace(".", "")
+            
+            context = {'file':questionFile.file, 'fileType':fileExtension, 'question':self.get_object()}
+
+        return context
+    
     
     
 
